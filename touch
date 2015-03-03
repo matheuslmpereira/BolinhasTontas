@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <style type="text/css">
+      #maincanvas { border: 1px solid black; cursor: none}
+  </style>
+  <script type="application/javascript">
+	var canvas;
+	var ctx;
+	var jumps = 0;
+	var raf;
+	var balls = [];
+	var numBalls = 10;
+	var running = false;
+	var time;
+	
+	function init() {
+		time = new Date().getTime();
+		
+		for(var i=0; i < numBalls; i++){
+			balls[balls.length] = new ball();
+		}
+	
+		canvas = document.getElementById('maincanvas');
+		
+		canvas.addEventListener('touchmove', function(e){
+			mark.x = e.clientX;
+			mark.y = e.clientY;
+		});
+		
+		canvas.addEventListener("mousedown",function(e){
+			for(var i=0; i < balls.length; i++){				
+				if(Math.sqrt(Math.pow(( balls[i].x - e.clientX ), 2) + Math.pow(( balls[i].y - e.clientY ), 2)) <= balls[i].radius){
+					balls[i].color = 'red';
+				}
+			}
+		});
+		ctx = canvas.getContext('2d');
+		
+		repaint();
+		
+		draw();
+	}
+	
+	var fps = {
+		current: 0,
+		last: 0,
+		qtd: 50,
+		counter: 0,
+		lastUpdated: Date.now(),
+		draw: function() {
+			ctx.font = '12pt Arial';
+			ctx.fillStyle = '#000';
+			ctx.textBaseline = 'top';
+			ctx.fillText(fps.last + 'fps', 5, 5);
+		},
+		update: function() {
+			fps.current ++;
+			if (Date.now() - fps.lastUpdated >= 1000) {
+				fps.last = fps.current;
+				fps.current = 0;
+				fps.lastUpdated = Date.now();
+			}
+		}
+	}	
+
+	var mark = {
+	  x: 0,
+	  y: 0,
+	  draw: function() {
+		ctx.beginPath();
+		ctx.moveTo(this.x+5, this.y);
+		ctx.lineTo(this.x+30, this.y);
+		ctx.stroke();
+		
+		ctx.moveTo(this.x, this.y+5);
+		ctx.lineTo(this.x, this.y+30);
+		ctx.stroke();
+				
+		ctx.moveTo(this.x-30, this.y);
+		ctx.lineTo(this.x-5, this.y);
+		ctx.stroke();
+		
+		ctx.moveTo(this.x, this.y-30);
+		ctx.lineTo(this.x, this.y-5);
+		ctx.stroke();
+		
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, 25, 0, Math.PI*2, true);
+		ctx.closePath();
+		ctx.stroke();
+	  }
+	};
+	
+	function ball() {
+	  this.x = 500*Math.random(),
+	  this.y = 500*Math.random(),
+	  this.vx = 10*Math.random(),
+	  this.vy = 10*Math.random(),
+	  this.flagx = 1,
+	  this.flagy = 1,
+	  this.radius = 25,
+	  this.color = 'blue',
+	  this.draw = function() {
+	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
+		  this.flagy = -this.flagy;
+		  this.vy = this.flagy*50*Math.random();
+		  
+		}
+		if (this.x + this.vx > canvas.width || this.x + this.vx < 0) {
+		  this.flagx = -this.flagx;
+		  this.vx = this.flagx*50*Math.random();
+		}
+		
+		this.y += this.vy;
+		this.x += this.vx;
+		
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+		ctx.closePath();
+		ctx.fillStyle = this.color;
+		ctx.fill();
+	  }
+	};
+	
+	function repaint(){
+		ctx.clearRect(0,0, canvas.width, canvas.height);
+		
+		for(var i=0; i < balls.length; i++){
+			balls[i].draw();
+		}
+		
+		mark.draw();
+		
+		fps.update();
+		fps.draw();
+	}
+	
+	function draw() {
+	
+		var now = new Date().getTime();
+		
+		if(now - time > 1000/fps.qtd){			
+			time = now;
+			repaint();
+		}
+				
+		window.requestAnimationFrame(draw);
+	}
+	
+  </script>
+ </head>
+ <body onload="init();">
+   <canvas id="maincanvas" width="500" height="500"></canvas>
+ </body>
+</html>
