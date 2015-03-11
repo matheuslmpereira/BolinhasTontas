@@ -10,7 +10,7 @@
 		margin: 0px;
 	}
 	
-	#maincanvas { margin: 0px;}
+	#maincanvas { margin: 0px; border: 1px solid black}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -31,8 +31,8 @@
 	
 		canvas = document.getElementById('maincanvas');
 		
-		canvas.width = document.body.clientWidth;
-		canvas.height = document.body.clientHeight;
+		canvas.width = document.body.clientWidth-2; //document.width is obsolete
+		canvas.height = document.body.clientHeight-5; //document.height is obsolete
 		
 		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
@@ -73,8 +73,8 @@
 	function ball() {
 	  this.x = 500*Math.random(),
 	  this.y = 500*Math.random(),
-	  this.vx = 10*Math.random(),
-	  this.vy = 10*Math.random(),
+	  this.vx = 2*Math.random(),
+	  this.vy = 2*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
 	  this.radius = 0.05,
@@ -82,12 +82,12 @@
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
 		  this.flagy = -this.flagy;
-		  this.vy = this.flagy*50*Math.random();
+		  this.vy = this.flagy*10*Math.random();
 		  
 		}
 		if (this.x + this.vx > canvas.width || this.x + this.vx < 0) {
 		  this.flagx = -this.flagx;
-		  this.vx = this.flagx*50*Math.random();
+		  this.vx = this.flagx*10*Math.random();
 		}
 		
 		this.y += this.vy;
@@ -102,14 +102,14 @@
 	};
 	
 	function repaint(){
-		ctx.canvas.width  = window.innerWidth;
-		ctx.canvas.height = window.innerHeight;
+		ctx.canvas.width  = window.innerWidth-2;
+		ctx.canvas.height = window.innerHeight-6;
 		
 		
-		canvas.width = document.body.clientWidth; //document.width is obsolete
-		canvas.height = document.body.clientHeight; //document.height is obsolete
+		canvas.width = document.body.clientWidth-2; //document.width is obsolete
+		canvas.height = document.body.clientHeight-6; //document.height is obsolete
 		
-		ctx.clearRect(0,0, canvas.width, canvas.height);
+		ctx.clearRect(0,0, canvas.width-50, canvas.height-50);
 		
 		for(var i=0; i < balls.length; i++){
 			balls[i].draw();
@@ -119,7 +119,6 @@
 		fps.draw();
 	}
 	
-	function draw() {
 	function draw() {
 	
 		var now = new Date().getTime();
