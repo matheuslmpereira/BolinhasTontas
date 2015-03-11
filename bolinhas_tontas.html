@@ -3,7 +3,13 @@
  <head>
   <meta charset="utf-8"/>
   <style type="text/css">
-      #maincanvas { border: 1px solid black; cursor: none}
+	html, body {
+		width:  100%;
+		height: 100%;
+		margin: 0px;
+	}
+	
+	#maincanvas { margin: 0px; border: 1px solid black; cursor: none}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -23,7 +29,10 @@
 		}
 	
 		canvas = document.getElementById('maincanvas');
-
+		
+		canvas.width = document.body.clientWidth; //document.width is obsolete
+		canvas.height = document.body.clientHeight; //document.height is obsolete
+		
 		canvas.addEventListener('mousemove', function(e){
 			mark.x = e.clientX;
 			mark.y = e.clientY;
@@ -92,7 +101,6 @@
 		ctx.stroke();
 	  }
 	};
-
 	
 	function ball() {
 	  this.x = 500*Math.random(),
@@ -126,6 +134,13 @@
 	};
 	
 	function repaint(){
+		ctx.canvas.width  = window.innerWidth;
+		ctx.canvas.height = window.innerHeight;
+		
+		
+		canvas.width = document.body.clientWidth; //document.width is obsolete
+		canvas.height = document.body.clientHeight; //document.height is obsolete
+		
 		ctx.clearRect(0,0, canvas.width, canvas.height);
 		
 		for(var i=0; i < balls.length; i++){
