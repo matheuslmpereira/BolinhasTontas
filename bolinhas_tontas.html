@@ -39,11 +39,7 @@
 		});
 		
 		canvas.addEventListener("touchstart",function(e){
-			for(var i=0; i < balls.length; i++){				
-				if(Math.sqrt(Math.pow(( balls[i].x - e.clientX ), 2) + Math.pow(( balls[i].y - e.clientY ), 2)) <= balls[i].radius*canvas.width){
-					balls[i].color = 'red';
-				}
-			}
+			alert(e.changedTouches[0].pageX)
 		}, false);
 		ctx = canvas.getContext('2d');
 		
