@@ -9,7 +9,7 @@
 		margin: 0px;
 	}
 	
-	#maincanvas { margin: 0px; border: 1px solid black; cursor: none}
+	#maincanvas { margin: 0px; border: 1px solid black}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -38,14 +38,13 @@
 			mark.y = e.clientY;
 		});
 		
-		canvas.addEventListener('touchstart', function(e){
+		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
-				if(Math.sqrt(Math.pow(( balls[i].x - e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){	
-					balls[i].color = 'red';			
+				if(Math.sqrt(Math.pow(( balls[i].x - e.clientX ), 2) + Math.pow(( balls[i].y - e.clientY ), 2)) <= balls[i].radius*canvas.width){
+					balls[i].color = 'red';
 				}
 			}
-		    }, false);
-    
+		}, false);
 		ctx = canvas.getContext('2d');
 		
 		repaint();
