@@ -2,6 +2,7 @@
 <html>
  <head>
   <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
   <style type="text/css">
 	html, body {
 		width:  100%;
@@ -32,11 +33,6 @@
 		
 		canvas.width = document.body.clientWidth; //document.width is obsolete
 		canvas.height = document.body.clientHeight; //document.height is obsolete
-		
-		canvas.addEventListener('mousemove', function(e){
-			mark.x = e.clientX;
-			mark.y = e.clientY;
-		});
 		
 		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
