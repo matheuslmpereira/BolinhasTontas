@@ -40,7 +40,7 @@
 		
 		canvas.addEventListener("mousedown",function(e){
 			for(var i=0; i < balls.length; i++){				
-				if(Math.sqrt(Math.pow(( balls[i].x - e.clientX ), 2) + Math.pow(( balls[i].y - e.clientY ), 2)) <= balls[i].radius){
+				if(Math.sqrt(Math.pow(( balls[i].x - e.clientX ), 2) + Math.pow(( balls[i].y - e.clientY ), 2)) <= balls[i].radius*canvas.width){
 					balls[i].color = 'red';
 				}
 			}
@@ -109,7 +109,7 @@
 	  this.vy = 10*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
-	  this.radius = 25,
+	  this.radius = 0.03,
 	  this.color = 'blue',
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
@@ -126,7 +126,7 @@
 		this.x += this.vx;
 		
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+		ctx.arc(this.x, this.y, this.radius*canvas.width, 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fillStyle = this.color;
 		ctx.fill();
