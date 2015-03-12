@@ -2,8 +2,15 @@
 <html>
  <head>
   <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
   <style type="text/css">
-      #maincanvas { border: 1px solid black; cursor: none}
+	html, body {
+		width:  100%;
+		height: 100%;
+		margin: 0px;
+	}
+	
+	#maincanvas { margin: 0px; border: 1px solid black}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -11,7 +18,7 @@
 	var jumps = 0;
 	var raf;
 	var balls = [];
-	var numBalls = 10;
+	var numBalls = 20;
 	var running = false;
 	var time;
 	
@@ -24,18 +31,25 @@
 	
 		canvas = document.getElementById('maincanvas');
 		
-		canvas.addEventListener('touchmove', function(e){
-			mark.x = e.clientX;
-			mark.y = e.clientY;
-		});
+		canvas.width = document.body.clientWidth-2; //document.width is obsolete
+		canvas.height = document.body.clientHeight-5; //document.height is obsolete
 		
-		canvas.addEventListener("mousedown",function(e){
+		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
-				if(Math.sqrt(Math.pow(( balls[i].x - e.clientX ), 2) + Math.pow(( balls[i].y - e.clientY ), 2)) <= balls[i].radius){
-					balls[i].color = 'red';
+				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){
+					if(balls[i].color == 'blue') balls[i].color = 'red';
+					else if(balls[i].color == 'red') balls[i].color = 'yellow';
+					else if(balls[i].color == 'yellow') balls[i].color = 'green';
+					else if(balls[i].color == 'green') balls[i].color = 'gray';
+					else if(balls[i].color == 'gray') balls[i].color = 'purple';
+					else if(balls[i].color == 'purple') balls[i].color = 'pink';
+					else if(balls[i].color == 'pink') balls[i].color = 'orange';
+					else if(balls[i].color == 'orange') balls[i].color = 'brown';
+					else if(balls[i].color == 'brown') balls[i].color = 'white';
+					else if(balls[i].color == 'white') balls[i].color = 'blue';
 				}
 			}
-		});
+		}, false);
 		ctx = canvas.getContext('2d');
 		
 		repaint();
@@ -64,60 +78,32 @@
 			}
 		}
 	}	
-
-	var mark = {
-	  x: 0,
-	  y: 0,
-	  draw: function() {
-		ctx.beginPath();
-		ctx.moveTo(this.x+5, this.y);
-		ctx.lineTo(this.x+30, this.y);
-		ctx.stroke();
-		
-		ctx.moveTo(this.x, this.y+5);
-		ctx.lineTo(this.x, this.y+30);
-		ctx.stroke();
-				
-		ctx.moveTo(this.x-30, this.y);
-		ctx.lineTo(this.x-5, this.y);
-		ctx.stroke();
-		
-		ctx.moveTo(this.x, this.y-30);
-		ctx.lineTo(this.x, this.y-5);
-		ctx.stroke();
-		
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, 25, 0, Math.PI*2, true);
-		ctx.closePath();
-		ctx.stroke();
-	  }
-	};
 	
 	function ball() {
 	  this.x = 500*Math.random(),
 	  this.y = 500*Math.random(),
-	  this.vx = 10*Math.random(),
-	  this.vy = 10*Math.random(),
+	  this.vx = 2*Math.random(),
+	  this.vy = 2*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
-	  this.radius = 25,
+	  this.radius = 0.1,
 	  this.color = 'blue',
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
 		  this.flagy = -this.flagy;
-		  this.vy = this.flagy*50*Math.random();
+		  this.vy = this.flagy*10*Math.random();
 		  
 		}
 		if (this.x + this.vx > canvas.width || this.x + this.vx < 0) {
 		  this.flagx = -this.flagx;
-		  this.vx = this.flagx*50*Math.random();
+		  this.vx = this.flagx*10*Math.random();
 		}
 		
 		this.y += this.vy;
 		this.x += this.vx;
 		
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+		ctx.arc(this.x, this.y, this.radius*canvas.width, 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fillStyle = this.color;
 		ctx.fill();
@@ -125,13 +111,18 @@
 	};
 	
 	function repaint(){
-		ctx.clearRect(0,0, canvas.width, canvas.height);
+		ctx.canvas.width  = window.innerWidth-2;
+		ctx.canvas.height = window.innerHeight-6;
+		
+		
+		canvas.width = document.body.clientWidth-2; //document.width is obsolete
+		canvas.height = document.body.clientHeight-6; //document.height is obsolete
+		
+		ctx.clearRect(0,0, canvas.width-50, canvas.height-50);
 		
 		for(var i=0; i < balls.length; i++){
 			balls[i].draw();
 		}
-		
-		mark.draw();
 		
 		fps.update();
 		fps.draw();
@@ -141,10 +132,7 @@
 	
 		var now = new Date().getTime();
 		
-		if(now - time > 1000/fps.qtd){			
-			time = now;
-			repaint();
-		}
+		repaint();
 				
 		window.requestAnimationFrame(draw);
 	}
