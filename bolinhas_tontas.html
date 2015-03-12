@@ -11,28 +11,6 @@
 	}
 	
 	#maincanvas { margin: 0px; border: 1px solid black}
-	
-	@media screen {
-	  div.normal_text {
-		color: red;
-		display: block;
-	  }
-	  
-	  div.mobile_text {
-		display: none;
-	  }
-	}
-
-	@media (max-width: 700px) {
-	  div.normal_text {
-		display: none;
-	  }
-	  
-	  div.mobile_text {
-		color: green;
-		display: block;
-	  }
-	}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -40,7 +18,7 @@
 	var jumps = 0;
 	var raf;
 	var balls = [];
-	var numBalls = 10;
+	var numBalls = 20;
 	var running = false;
 	var time;
 	
@@ -54,12 +32,21 @@
 		canvas = document.getElementById('maincanvas');
 		
 		canvas.width = document.body.clientWidth-2; //document.width is obsolete
-		canvas.height = document.body.clientHeight-25; //document.height is obsolete
+		canvas.height = document.body.clientHeight-5; //document.height is obsolete
 		
 		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
 				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){
-					balls[i].color = 'red';
+					if(balls[i].color == 'blue') balls[i].color = 'red';
+					else if(balls[i].color == 'red') balls[i].color = 'yellow';
+					else if(balls[i].color == 'yellow') balls[i].color = 'green';
+					else if(balls[i].color == 'green') balls[i].color = 'gray';
+					else if(balls[i].color == 'gray') balls[i].color = 'purple';
+					else if(balls[i].color == 'purple') balls[i].color = 'pink';
+					else if(balls[i].color == 'pink') balls[i].color = 'orange';
+					else if(balls[i].color == 'orange') balls[i].color = 'brown';
+					else if(balls[i].color == 'brown') balls[i].color = 'white';
+					else if(balls[i].color == 'white') balls[i].color = 'blue';
 				}
 			}
 		}, false);
@@ -99,7 +86,7 @@
 	  this.vy = 2*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
-	  this.radius = 0.05,
+	  this.radius = 0.1,
 	  this.color = 'blue',
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
@@ -125,13 +112,13 @@
 	
 	function repaint(){
 		ctx.canvas.width  = window.innerWidth-2;
-		ctx.canvas.height = window.innerHeight-2;
+		ctx.canvas.height = window.innerHeight-6;
 		
 		
-		canvas.width = document.body.clientWidth-2;
-		canvas.height = document.body.clientHeight-25;
+		canvas.width = document.body.clientWidth-2; //document.width is obsolete
+		canvas.height = document.body.clientHeight-6; //document.height is obsolete
 		
-		ctx.clearRect(0,0, canvas.width, canvas.height);
+		ctx.clearRect(0,0, canvas.width-50, canvas.height-50);
 		
 		for(var i=0; i < balls.length; i++){
 			balls[i].draw();
@@ -153,8 +140,6 @@
   </script>
  </head>
  <body onload="init();">
-	<div class="normal_text">Estou em um desktop.</div>
-	<div class="mobile_text">Estou em um mobile.</div>
-	<canvas id="maincanvas" ></canvas>
+   <canvas id="maincanvas" width="500" height="500"></canvas>
  </body>
 </html>
