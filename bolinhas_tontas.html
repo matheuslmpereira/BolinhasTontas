@@ -21,6 +21,7 @@
 	var numBalls = 20;
 	var running = false;
 	var time;
+	var falha = 0, acerto = 0;
 	
 	function init() {
 		canvas = document.getElementById('maincanvas');
@@ -33,13 +34,25 @@
 		}
 		
 		canvas.addEventListener("touchstart",function(e){
-			for(var i=0; i < balls.length; i++){				
+			for(var i=0; i < balls.length; i++){	
 				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth)){
-					if(balls[i].color == 'blue') balls[i].color = 'green';
-					else if(balls[i].color == 'green') balls[i].color = 'yellow';
-					else if(balls[i].color == 'yellow') balls[i].color = 'red';
-					else if(balls[i].color == 'red') balls[i].color = 'white';
-					else if(balls[i].color == 'white') balls[i].color = 'blue';
+					if(balls[i].color == 'blue'){
+						balls[i].color = 'green';
+					}
+					else if(balls[i].color == 'green'){
+						balls[i].color = 'yellow';
+					}
+					else if(balls[i].color == 'yellow'){
+						balls[i].color = 'red';
+					}
+					else if(balls[i].color == 'red'){
+						balls[i].color = 'white';
+						acerto = 6;
+					}
+					else if(balls[i].color == 'white'){
+						balls[i].color = 'blue';
+						falha = 6;
+					}
 				}
 			}
 			e.preventDefault();
@@ -49,6 +62,7 @@
 		
 		repaint();
 		
+						
 		running = true;
 		draw();
 	}
@@ -115,6 +129,18 @@
 		canvas.height = document.body.clientHeight-2;
 		
 		ctx.clearRect(0,0, canvas.width, canvas.height);
+			
+		if(falha > 0){
+			falha--;
+			ctx.fillStyle = 'red';
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+		}
+		
+		if(acerto > 0){
+			acerto--;
+			ctx.fillStyle = 'green';
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+		}
 		
 		for(var i=0; i < balls.length; i++){
 			balls[i].draw();
