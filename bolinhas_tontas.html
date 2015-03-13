@@ -10,7 +10,7 @@
 		margin: 0px;
 	}
 	
-	#maincanvas { margin: 0px; border: 1px solid black}
+	#maincanvas { margin: 0px; border: 1px solid red}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -25,14 +25,14 @@
 	function init() {
 		canvas = document.getElementById('maincanvas');
 		
-		canvas.width = document.body.clientWidth-2; //document.width is obsolete
-		canvas.height = document.body.clientHeight-2; //document.height is obsolete
+		canvas.width = document.body.clientWidth; //document.width is obsolete
+		canvas.height = document.body.clientHeight; //document.height is obsolete
 		
 		for(var i=0; i < numBalls; i++){
 			balls[balls.length] = new ball();
 		}
 		
-		canvas.addEventListener("touchmove",function(e){
+		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
 				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth)){
 					if(balls[i].color == 'blue') balls[i].color = 'red';
@@ -112,12 +112,12 @@
 	};
 	
 	function repaint(){
-		ctx.canvas.width  = window.innerWidth-2;
-		ctx.canvas.height = window.innerHeight-2;
+		ctx.canvas.width  = window.innerWidth;
+		ctx.canvas.height = window.innerHeight;
 		
 		
-		canvas.width = document.body.clientWidth-2; //document.width is obsolete
-		canvas.height = document.body.clientHeight-2; //document.height is obsolete
+		canvas.width = document.body.clientWidth-2;
+		canvas.height = document.body.clientHeight-2;
 		
 		ctx.clearRect(0,0, canvas.width, canvas.height);
 		
@@ -139,6 +139,6 @@
   </script>
  </head>
  <body onload="init();">
-   <canvas id="maincanvas" width="500" height="500"></canvas>
+   <canvas id="maincanvas"></canvas>
  </body>
 </html>
