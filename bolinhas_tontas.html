@@ -49,7 +49,23 @@
 			}
 		}, false);
 				
-		canvas.addEventListener("touchmove",function(e){e.preventdefault()}, false);
+		canvas.addEventListener("touchmove",function(e){
+			e.preventdefault();
+			for(var i=0; i < balls.length; i++){				
+				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){
+					if(balls[i].color == 'blue') balls[i].color = 'red';
+					else if(balls[i].color == 'red') balls[i].color = 'yellow';
+					else if(balls[i].color == 'yellow') balls[i].color = 'green';
+					else if(balls[i].color == 'green') balls[i].color = 'gray';
+					else if(balls[i].color == 'gray') balls[i].color = 'purple';
+					else if(balls[i].color == 'purple') balls[i].color = 'pink';
+					else if(balls[i].color == 'pink') balls[i].color = 'orange';
+					else if(balls[i].color == 'orange') balls[i].color = 'brown';
+					else if(balls[i].color == 'brown') balls[i].color = 'white';
+					else if(balls[i].color == 'white') balls[i].color = 'blue';
+				}
+			}
+		}, false);
 		
 		ctx = canvas.getContext('2d');
 		
