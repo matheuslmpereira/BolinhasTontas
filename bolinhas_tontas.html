@@ -50,7 +50,6 @@
 		}, false);
 				
 		canvas.addEventListener("touchmove",function(e){
-			e.preventdefault();
 			for(var i=0; i < balls.length; i++){				
 				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){
 					if(balls[i].color == 'blue') balls[i].color = 'red';
