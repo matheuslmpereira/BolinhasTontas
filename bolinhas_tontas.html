@@ -48,10 +48,15 @@
 				}
 			}
 		}, false);
+		
+		canvas.addEventListener("touchmove",function(e){event.preventDefault()}, false);
+		
+		
 		ctx = canvas.getContext('2d');
 		
 		repaint();
 		
+		running = true;
 		draw();
 	}
 	
@@ -84,7 +89,8 @@
 	  this.vy = 2*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
-	  this.radius = 0.1,
+	  this.radiusPercent = 0.1,
+	  this.radius = 0;
 	  this.color = 'blue',
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
@@ -101,7 +107,7 @@
 		this.x += this.vx;
 		
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius*canvas.width, 0, Math.PI*2, true);
+		ctx.arc(this.x, this.y, this.radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth), 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fillStyle = this.color;
 		ctx.fill();
@@ -127,12 +133,10 @@
 	}
 	
 	function draw() {
-	
-		var now = new Date().getTime();
-		
-		repaint();
-				
-		window.requestAnimationFrame(draw);
+		if(running){
+			repaint();
+			window.requestAnimationFrame(draw);
+		}
 	}
 	
   </script>
