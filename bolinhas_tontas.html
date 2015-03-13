@@ -34,7 +34,7 @@
 		
 		canvas.addEventListener("touchstart",function(e){
 			for(var i=0; i < balls.length; i++){				
-				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){
+				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth)){
 					if(balls[i].color == 'blue') balls[i].color = 'red';
 					else if(balls[i].color == 'red') balls[i].color = 'yellow';
 					else if(balls[i].color == 'yellow') balls[i].color = 'green';
@@ -87,7 +87,7 @@
 	  this.vy = 2*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
-	  this.radius = 0.1,
+	  this.radiusPercent = 0.1,
 	  this.color = 'blue',
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
@@ -104,7 +104,7 @@
 		this.x += this.vx;
 		
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius*canvas.width, 0, Math.PI*2, true);
+		ctx.arc(this.x, this.y, this.radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth), 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fillStyle = this.color;
 		ctx.fill();
