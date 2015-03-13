@@ -49,7 +49,7 @@
 			}
 		}, false);
 				
-		canvas.addEventListener("touchmove",function(e){}, false);
+		canvas.addEventListener("touchmove",function(e){e.preventdefault()}, false);
 		
 		ctx = canvas.getContext('2d');
 		
