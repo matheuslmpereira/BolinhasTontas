@@ -32,7 +32,7 @@
 			balls[balls.length] = new ball();
 		}
 		
-		canvas.addEventListener("touchstart",function(e){
+		canvas.addEventListener("touchmove",function(e){
 			for(var i=0; i < balls.length; i++){				
 				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth)){
 					if(balls[i].color == 'blue') balls[i].color = 'red';
