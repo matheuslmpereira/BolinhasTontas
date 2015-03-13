@@ -119,7 +119,7 @@
 		canvas.width = document.body.clientWidth-2; //document.width is obsolete
 		canvas.height = document.body.clientHeight-2; //document.height is obsolete
 		
-		ctx.clearRect(0,0, canvas.width-50, canvas.height-50);
+		ctx.clearRect(0,0, canvas.width, canvas.height);
 		
 		for(var i=0; i < balls.length; i++){
 			balls[i].draw();
