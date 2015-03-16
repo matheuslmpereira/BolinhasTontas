@@ -24,16 +24,20 @@
 	var time;
 	var falha = 0, acerto = 0;
 	
-	function init() {
+	function requestFullScreen() {
+
 		var el = document.body;
 
 		// Supports most browsers and their versions.
-		var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen;
+		var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen|| el.mozRequestFullScreen || el.msRequestFullScreen;
 
 		if (requestMethod) {
+
 			// Native full screen.
 			requestMethod.call(el);
+
 		} else if (typeof window.ActiveXObject !== "undefined") {
+
 			// Older IE.
 			var wscript = new ActiveXObject("WScript.Shell");
 
@@ -41,6 +45,9 @@
 				wscript.SendKeys("{F11}");
 			}
 		}
+	}
+
+	function init() {
 	
 		canvas = document.getElementById('maincanvas');
 		
@@ -188,6 +195,7 @@
   </script>
  </head>
  <body onload="init();">
-   <canvas id="maincanvas"></canvas>
+	<input type="button" value="click to go fullscreen" onclick="requestFullScreen()">
+	<canvas id="maincanvas"></canvas>
  </body>
 </html>
