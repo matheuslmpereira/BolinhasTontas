@@ -10,7 +10,7 @@
 		margin: 0px;
 	}
 	
-	#maincanvas { margin: 0px; border: 1px solid black}
+	#maincanvas { margin: 0px; border: 1px solid green}
   </style>
   <script type="application/javascript">
 	var canvas;
@@ -18,42 +18,70 @@
 	var jumps = 0;
 	var raf;
 	var balls = [];
+	var acerto = [];
 	var numBalls = 20;
 	var running = false;
 	var time;
+	var falha = 0, acerto = 0;
 	
 	function init() {
-		time = new Date().getTime();
-		
-		for(var i=0; i < numBalls; i++){
-			balls[balls.length] = new ball();
+		var el = document.body;
+
+		// Supports most browsers and their versions.
+		var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen;
+
+		if (requestMethod) {
+			// Native full screen.
+			requestMethod.call(el);
+		} else if (typeof window.ActiveXObject !== "undefined") {
+			// Older IE.
+			var wscript = new ActiveXObject("WScript.Shell");
+
+			if (wscript !== null) {
+				wscript.SendKeys("{F11}");
+			}
 		}
 	
 		canvas = document.getElementById('maincanvas');
 		
-		canvas.width = document.body.clientWidth-2; //document.width is obsolete
-		canvas.height = document.body.clientHeight-5; //document.height is obsolete
+		canvas.width = document.body.clientWidth; //document.width is obsolete
+		canvas.height = document.body.clientHeight; //document.height is obsolete
+		
+		for(var i=0; i < numBalls; i++){
+			balls[balls.length] = new ball();
+		}
 		
 		canvas.addEventListener("touchstart",function(e){
-			for(var i=0; i < balls.length; i++){				
-				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radius*canvas.width){
-					if(balls[i].color == 'blue') balls[i].color = 'red';
-					else if(balls[i].color == 'red') balls[i].color = 'yellow';
-					else if(balls[i].color == 'yellow') balls[i].color = 'green';
-					else if(balls[i].color == 'green') balls[i].color = 'gray';
-					else if(balls[i].color == 'gray') balls[i].color = 'purple';
-					else if(balls[i].color == 'purple') balls[i].color = 'pink';
-					else if(balls[i].color == 'pink') balls[i].color = 'orange';
-					else if(balls[i].color == 'orange') balls[i].color = 'brown';
-					else if(balls[i].color == 'brown') balls[i].color = 'white';
-					else if(balls[i].color == 'white') balls[i].color = 'blue';
+			for(var i=0; i < balls.length; i++){	
+				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth)){
+					if(balls[i].color == 'blue'){
+						balls[i].color = 'green';
+					}
+					else if(balls[i].color == 'green'){
+						balls[i].color = 'yellow';
+					}
+					else if(balls[i].color == 'yellow'){
+						balls[i].color = 'red';
+					}
+					else if(balls[i].color == 'red'){
+						balls[i].color = 'white';
+						acerto = 10;
+					}
+					else if(balls[i].color == 'white'){
+						balls[i].color = 'blue';
+						falha = 10;
+					}
 				}
 			}
+			e.preventDefault();
 		}, false);
+		
 		ctx = canvas.getContext('2d');
 		
 		repaint();
 		
+						
+		running = true;
 		draw();
 	}
 	
@@ -79,14 +107,24 @@
 		}
 	}	
 	
+	function ponto() {
+		this.x = 0;
+		this.y = 0;
+	}
+	
+	function falha() {
+		this.x = 0;
+		this.y = 0;
+	}
+	
 	function ball() {
-	  this.x = 500*Math.random(),
-	  this.y = 500*Math.random(),
+	  this.x = canvas.width*Math.random(),
+	  this.y = canvas.height*Math.random(),
 	  this.vx = 2*Math.random(),
 	  this.vy = 2*Math.random(),
 	  this.flagx = 1,
 	  this.flagy = 1,
-	  this.radius = 0.1,
+	  this.radiusPercent = 0.1,
 	  this.color = 'blue',
 	  this.draw = function() {
 	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
@@ -103,7 +141,7 @@
 		this.x += this.vx;
 		
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius*canvas.width, 0, Math.PI*2, true);
+		ctx.arc(this.x, this.y, this.radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth), 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fillStyle = this.color;
 		ctx.fill();
@@ -111,14 +149,26 @@
 	};
 	
 	function repaint(){
-		ctx.canvas.width  = window.innerWidth-2;
-		ctx.canvas.height = window.innerHeight-6;
+		ctx.canvas.width  = window.innerWidth;
+		ctx.canvas.height = window.innerHeight;
 		
 		
-		canvas.width = document.body.clientWidth-2; //document.width is obsolete
-		canvas.height = document.body.clientHeight-6; //document.height is obsolete
+		canvas.width = document.body.clientWidth-2;
+		canvas.height = document.body.clientHeight-2;
 		
-		ctx.clearRect(0,0, canvas.width-50, canvas.height-50);
+		ctx.clearRect(0,0, canvas.width, canvas.height);
+			
+		if(falha > 0){
+			falha--;
+			ctx.fillStyle = 'red';
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+		}
+		
+		if(acerto > 0){
+			acerto--;
+			ctx.fillStyle = 'green';
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+		}
 		
 		for(var i=0; i < balls.length; i++){
 			balls[i].draw();
@@ -129,17 +179,15 @@
 	}
 	
 	function draw() {
-	
-		var now = new Date().getTime();
-		
-		repaint();
-				
-		window.requestAnimationFrame(draw);
+		if(running){
+			repaint();
+			window.requestAnimationFrame(draw);
+		}
 	}
 	
   </script>
  </head>
  <body onload="init();">
-   <canvas id="maincanvas" width="500" height="500"></canvas>
+   <canvas id="maincanvas"></canvas>
  </body>
 </html>
