@@ -25,7 +25,8 @@
 	var falha = 0, acerto = 0;
 	
 	function requestFullScreen() {
-
+		document.getElementById("activefull").style.display = "none";
+		
 		var el = document.body;
 
 		// Supports most browsers and their versions.
@@ -195,7 +196,7 @@
   </script>
  </head>
  <body onload="init();">
-	<input type="button" value="click to go fullscreen" onclick="requestFullScreen()">
+	<input id="activefull" type="button" value="click to go fullscreen" onclick="requestFullScreen()">
 	<canvas id="maincanvas"></canvas>
  </body>
 </html>
