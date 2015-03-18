@@ -1,0 +1,23 @@
+<!DOCTYPE html><html class=''>
+<head><meta charset='UTF-8'>
+<link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+<style class="cp-pen-styles">
+	.fa {
+	  color: #efefef;
+	  font-size: 3rem;
+	  padding: 0 0.2rem 0;
+	  text-decoration: none;
+	}
+	.fa.fa-facebook-square {
+	  color: #3b5998;
+	}
+	.fa.fa-linkedin-square {
+	  color: #0976b4;
+	}
+</style>
+</head>
+	<body>
+		<a href="http://www.google.com" class="fa fa-facebook-square" />
+		<a href="https://www.linkedin.com/profile/view?id=396932253" class="fa fa-linkedin-square" />
+	</body>
+</html>
