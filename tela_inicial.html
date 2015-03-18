@@ -1,24 +1,291 @@
-<!DOCTYPE html><html class=''>
-<head><meta charset='UTF-8'>
-<link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-<style class="cp-pen-styles">
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  
+  <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+  
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <style class="cp-pen-styles">
+
+	#maincanvas { margin: 0px; border: 1px solid green}
 	.fa {
+	  font-size: 90px;
+	  font-weight: 700;
 	  color: #efefef;
-	  font-size: 50px;
-	  padding: 0 5px 0;
+	  padding: 0 20px 0;
 	  text-decoration: none;
 	}
 	.fa.fa-facebook-square {
 	  color: #3b5998;
 	}
 	.fa.fa-linkedin-square {
+	  position: absolute;
 	  color: #0976b4;
 	}
-</style>
-</head>
-	<body>
-		BATATA
-		<a href="http://www.google.com" class="fa fa-facebook-square" />
-		<a href="https://www.linkedin.com/profile/view?id=396932253" class="fa fa-linkedin-square" />
-	</body>
+	
+	html,
+	body {
+	  width: 100%;
+	  height: 100%;
+	}
+	body {
+	  margin: 0;
+	  font-family: 'Open Sans', sans-serif;
+	  background-color: #f0f0f0;
+	  background-image: url('http://subtlepatterns.com/patterns/tiny_grid.png')
+	}
+	* {
+	  outline: 0;
+	}
+	.Button {
+	  margin-bottom: 50px;
+	  -webkit-perspective: 600px;
+			  perspective: 600px;
+	}
+	.Button.Button--start {
+	  width: 120px;
+	  height: 45px;
+	}
+	.Button.Button--start button {
+	  border-radius: 4px;
+	}
+	.Button.Button--select {
+	  width: 60px;
+	  height: 60px;
+	}
+	.Button.Button--select button {
+	  border-radius: 50%;
+	}
+	button {
+	  position: relative;
+	  margin: 0;
+	  padding: 0;
+	  width: 100%;
+	  height: 100%;
+	  border: 0;
+	  box-shadow: 0px 5px 0px #750014;
+	  background: -webkit-radial-gradient(center, ellipse, #d60d2e 0%, #c20020 100%);
+	  background: radial-gradient(ellipse at center, #d60d2e 0%, #c20020 100%);
+	  -webkit-transition: -webkit-transform 0.15s, box-shadow 0.15s;
+			  transition: transform 0.15s, box-shadow 0.15s;
+	  -webkit-transform: rotateX(30deg) translateY(0);
+			  transform: rotateX(30deg) translateY(0);
+	  cursor: pointer;
+	  -webkit-font-smoothing: antialiased;
+	}
+	button:hover:active {
+	  text-shadow: 0 0 4px #ad001d;
+	  box-shadow: 0 1px 0 #423847;
+	  background: -webkit-radial-gradient(center, ellipse, #ff002b 0%, #ed0028 100%);
+	  background: radial-gradient(ellipse at center, #ff002b 0%, #ed0028 100%);
+	  -webkit-transition: -webkit-transform 0.05s, box-shadow 0.05s;
+			  transition: transform 0.05s, box-shadow 0.05s;
+	  -webkit-transform: rotateX(30deg) translateY(4px);
+			  transform: rotateX(30deg) translateY(4px);
+	}
+	button span {
+	  position: relative;
+	  font-size: 14px;
+	  font-weight: 700;
+	  font-style: italic;
+	  color: #fff;
+	  text-transform: uppercase;
+	  -webkit-transform: translate3d(0, 0, 0);
+			  transform: translate3d(0, 0, 0);
+	}
+	</style>
+  <script type="application/javascript">
+	var canvas;
+	var ctx;
+	var jumps = 0;
+	var raf;
+	var balls = [];
+	var acerto = [];
+	var numBalls = 20;
+	var running = false;
+	var time;
+	var falha = 0, acerto = 0;
+	
+	function requestFullScreen() {
+		document.getElementById('maincanvas').style.display = "block";
+		document.getElementById("activefull").style.display = "none";
+		
+		var el = document.body;
+
+		// Supports most browsers and their versions.
+		var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen|| el.mozRequestFullScreen || el.msRequestFullScreen;
+
+		if (requestMethod) {
+
+			// Native full screen.
+			requestMethod.call(el);
+
+		} else if (typeof window.ActiveXObject !== "undefined") {
+
+			// Older IE.
+			var wscript = new ActiveXObject("WScript.Shell");
+
+			if (wscript !== null) {
+				wscript.SendKeys("{F11}");
+			}
+		}
+	}
+
+	function init() {
+	
+		canvas = document.getElementById('maincanvas');
+		
+		canvas.width = document.body.clientWidth; //document.width is obsolete
+		canvas.height = document.body.clientHeight; //document.height is obsolete
+		
+		for(var i=0; i < numBalls; i++){
+			balls[balls.length] = new ball();
+		}
+		
+		canvas.addEventListener("touchstart",function(e){
+			for(var i=0; i < balls.length; i++){	
+				if(Math.sqrt(Math.pow(( balls[i].x -e.changedTouches[0].pageX ), 2) + Math.pow(( balls[i].y - e.changedTouches[0].pageY ), 2)) <= balls[i].radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth)){
+					if(balls[i].color == 'blue'){
+						balls[i].color = 'green';
+					}
+					else if(balls[i].color == 'green'){
+						balls[i].color = 'yellow';
+					}
+					else if(balls[i].color == 'yellow'){
+						balls[i].color = 'red';
+					}
+					else if(balls[i].color == 'red'){
+						balls[i].color = 'white';
+						acerto = 10;
+					}
+					else if(balls[i].color == 'white'){
+						balls[i].color = 'blue';
+						falha = 10;
+					}
+				}
+			}
+			e.preventDefault();
+		}, false);
+		
+		ctx = canvas.getContext('2d');
+		
+		repaint();
+		
+						
+		running = true;
+		draw();
+	}
+	
+	var fps = {
+		current: 0,
+		last: 0,
+		qtd: 50,
+		counter: 0,
+		lastUpdated: Date.now(),
+		draw: function() {
+			ctx.font = '12pt Arial';
+			ctx.fillStyle = '#000';
+			ctx.textBaseline = 'top';
+			ctx.fillText(fps.last + 'fps', 5, 5);
+		},
+		update: function() {
+			fps.current ++;
+			if (Date.now() - fps.lastUpdated >= 1000) {
+				fps.last = fps.current;
+				fps.current = 0;
+				fps.lastUpdated = Date.now();
+			}
+		}
+	}	
+	
+	function ponto() {
+		this.x = 0;
+		this.y = 0;
+	}
+	
+	function falha() {
+		this.x = 0;
+		this.y = 0;
+	}
+	
+	function ball() {
+	  this.x = canvas.width*Math.random(),
+	  this.y = canvas.height*Math.random(),
+	  this.vx = 2*Math.random(),
+	  this.vy = 2*Math.random(),
+	  this.flagx = 1,
+	  this.flagy = 1,
+	  this.radiusPercent = 0.1,
+	  this.color = 'blue',
+	  this.draw = function() {
+	  	if (this.y + this.vy > canvas.height || this.y + this.vy < 0) {
+		  this.flagy = -this.flagy;
+		  this.vy = this.flagy*10*Math.random();
+		  
+		}
+		if (this.x + this.vx > canvas.width || this.x + this.vx < 0) {
+		  this.flagx = -this.flagx;
+		  this.vx = this.flagx*10*Math.random();
+		}
+		
+		this.y += this.vy;
+		this.x += this.vx;
+		
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radiusPercent * ((document.body.clientWidth > document.body.clientHeight) ? document.body.clientHeight : document.body.clientWidth), 0, Math.PI*2, true);
+		ctx.closePath();
+		ctx.fillStyle = this.color;
+		ctx.fill();
+	  }
+	};
+	
+	function repaint(){
+		ctx.canvas.width  = window.innerWidth;
+		ctx.canvas.height = window.innerHeight;
+		
+		
+		canvas.width = document.body.clientWidth-2;
+		canvas.height = document.body.clientHeight-2;
+		
+		ctx.clearRect(0,0, canvas.width, canvas.height);
+			
+		if(falha > 0){
+			falha--;
+			ctx.fillStyle = 'red';
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+		}
+		
+		if(acerto > 0){
+			acerto--;
+			ctx.fillStyle = 'green';
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+		}
+		
+		for(var i=0; i < balls.length; i++){
+			balls[i].draw();
+		}
+		
+		fps.update();
+		fps.draw();
+	}
+	
+	function draw() {
+		if(running){
+			repaint();
+			window.requestAnimationFrame(draw);
+		}
+	}
+	
+  </script>
+ </head>
+ <body onload="init();">
+	<a href="http://www.google.com" class="fa fa-facebook-square" />
+	<a href="https://www.linkedin.com/profile/view?id=396932253" class="fa fa-linkedin-square" />
+	
+	<canvas id="maincanvas" style="display: none;"></canvas>
+	<div id="activefull" class="Button Button--start">
+		<button type="button" onclick="requestFullScreen()"><span>Start</span></button>
+	</div>
+ </body>
 </html>
