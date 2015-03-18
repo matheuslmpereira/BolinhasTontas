@@ -10,10 +10,8 @@
 
 	#maincanvas { margin: 0px; border: 1px solid green}
 	.fa {
-	  font-size: 90px;
-	  font-weight: 700;
+	  font-size: 10vmin;
 	  color: #efefef;
-	  padding: 0 20px 0;
 	  text-decoration: none;
 	}
 	.fa.fa-facebook-square {
@@ -43,18 +41,11 @@
 			  perspective: 600px;
 	}
 	.Button.Button--start {
-	  width: 120px;
-	  height: 45px;
+	  width: 20vmin;
+	  height: 8vmin;
 	}
 	.Button.Button--start button {
 	  border-radius: 4px;
-	}
-	.Button.Button--select {
-	  width: 60px;
-	  height: 60px;
-	}
-	.Button.Button--select button {
-	  border-radius: 50%;
 	}
 	button {
 	  position: relative;
@@ -73,20 +64,9 @@
 	  cursor: pointer;
 	  -webkit-font-smoothing: antialiased;
 	}
-	button:hover:active {
-	  text-shadow: 0 0 4px #ad001d;
-	  box-shadow: 0 1px 0 #423847;
-	  background: -webkit-radial-gradient(center, ellipse, #ff002b 0%, #ed0028 100%);
-	  background: radial-gradient(ellipse at center, #ff002b 0%, #ed0028 100%);
-	  -webkit-transition: -webkit-transform 0.05s, box-shadow 0.05s;
-			  transition: transform 0.05s, box-shadow 0.05s;
-	  -webkit-transform: rotateX(30deg) translateY(4px);
-			  transform: rotateX(30deg) translateY(4px);
-	}
 	button span {
 	  position: relative;
-	  font-size: 14px;
-	  font-weight: 700;
+	  font-size: 4vmin;
 	  font-style: italic;
 	  color: #fff;
 	  text-transform: uppercase;
@@ -279,12 +259,15 @@
   </script>
  </head>
  <body onload="init();">
-	<a href="http://www.google.com" class="fa fa-facebook-square" />
-	<a href="https://www.linkedin.com/profile/view?id=396932253" class="fa fa-linkedin-square" />
+	
+	<div id="activefull">
+		<a href="http://www.google.com" class="fa fa-facebook-square" /></a>
+		<a href="https://www.linkedin.com/profile/view?id=396932253" class="fa fa-linkedin-square" ></a>
+		<div id="activefull" class="Button Button--start">
+			<button type="button" onclick="requestFullScreen()"><span>Start</span></button>
+		</div>
+	</div>
 	
 	<canvas id="maincanvas" style="display: none;"></canvas>
-	<div id="activefull" class="Button Button--start">
-		<button type="button" onclick="requestFullScreen()"><span>Start</span></button>
-	</div>
  </body>
 </html>
