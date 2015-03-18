@@ -87,6 +87,8 @@
 	var falha = 0, acerto = 0;
 	
 	function requestFullScreen() {
+		init();
+		
 		document.getElementById('maincanvas').style.display = "block";
 		document.getElementById("activefull").style.display = "none";
 		
@@ -258,7 +260,7 @@
 	
   </script>
  </head>
- <body onload="init();">
+ <body>
 	
 	<div id="activefull">
 		<a href="http://www.google.com" class="fa fa-facebook-square" /></a>
