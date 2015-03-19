@@ -2,62 +2,64 @@
 <html>
  <head>
   <meta charset="utf-8"/>
+  
+	<link href='http://fonts.googleapis.com/css?family=Amatic+SC:400,700' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+  
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <style class="cp-pen-styles">
 
 	#maincanvas { margin: 0px; border: 1px solid green}
+	.fa {
+	  margin-left: 2vmin;
+	  font-size: 20vmin;
+	  color: #efefef;
+	  text-decoration: none;
+	}
+	.fa.fa-facebook-square {
+	  position: absolute;
+	  color: #3b5998;
+	}
+	.fa.fa-linkedin-square {
+	  color: #0976b4;
+	}
+	
+	.tontas {
+	  position: relative;
+	  font-family: 'Amatic SC', cursive;
+	  font-size: 20vmin;
+	  margin: -15vmin;
+	  letter-spacing: 0.02em;
+	  text-align: center;
+	}
+
+	.bolinhas {
+	  font-family: 'Amatic SC', cursive;
+	  font-size: 20vmin;
+	  letter-spacing: -0.06em;
+	  text-align: center;
+	}
 	
 	html,
 	body {
 	  width: 100%;
 	  height: 100%;
-	}
-	body {
 	  margin: 0;
-	  font-family: 'Open Sans', sans-serif;
 	}
-	* {
-	  outline: 0;
-	}
-	.Wrapper {
-	  width: 100%;
-	  height: 100%;
-	  display: -webkit-box;
-	  display: -webkit-flex;
-	  display: -ms-flexbox;
-	  display: flex;
-	  -webkit-box-orient: vertical;
-	  -webkit-box-direction: normal;
-	  -webkit-flex-direction: column;
-		  -ms-flex-direction: column;
-			  flex-direction: column;
-	  -webkit-box-pack: center;
-	  -webkit-justify-content: center;
-		  -ms-flex-pack: center;
-			  justify-content: center;
-	  -webkit-box-align: center;
-	  -webkit-align-items: center;
-		  -ms-flex-align: center;
-			  align-items: center;
-	}
+	
 	.Button {
-	  margin-bottom: 50px;
+	  margin-left: auto;
+	  margin-right: auto;
+	  margin-top: 20vmin;
 	  -webkit-perspective: 600px;
 			  perspective: 600px;
 	}
 	.Button.Button--start {
-	  width: 120px;
-	  height: 45px;
+	  width: 40vmin;
+	  height: 16vmin;
 	}
 	.Button.Button--start button {
 	  border-radius: 4px;
-	}
-	.Button.Button--select {
-	  width: 60px;
-	  height: 60px;
-	}
-	.Button.Button--select button {
-	  border-radius: 50%;
 	}
 	button {
 	  position: relative;
@@ -76,20 +78,9 @@
 	  cursor: pointer;
 	  -webkit-font-smoothing: antialiased;
 	}
-	button:hover:active {
-	  text-shadow: 0 0 4px #ad001d;
-	  box-shadow: 0 1px 0 #423847;
-	  background: -webkit-radial-gradient(center, ellipse, #ff002b 0%, #ed0028 100%);
-	  background: radial-gradient(ellipse at center, #ff002b 0%, #ed0028 100%);
-	  -webkit-transition: -webkit-transform 0.05s, box-shadow 0.05s;
-			  transition: transform 0.05s, box-shadow 0.05s;
-	  -webkit-transform: rotateX(30deg) translateY(4px);
-			  transform: rotateX(30deg) translateY(4px);
-	}
 	button span {
 	  position: relative;
-	  font-size: 14px;
-	  font-weight: 700;
+	  font-size: 8vmin;
 	  font-style: italic;
 	  color: #fff;
 	  text-transform: uppercase;
@@ -110,6 +101,8 @@
 	var falha = 0, acerto = 0;
 	
 	function requestFullScreen() {
+		init();
+		
 		document.getElementById('maincanvas').style.display = "block";
 		document.getElementById("activefull").style.display = "none";
 		
@@ -281,10 +274,19 @@
 	
   </script>
  </head>
- <body onload="init();">
-	<canvas id="maincanvas" style="display: none;"></canvas>
-	<div id="activefull" class="Button Button--start">
-		<button type="button" onclick="requestFullScreen()"><span>Start</span></button>
+ <body>
+	
+	<div id="activefull">
+		<a href="https://www.linkedin.com/profile/view?id=396932253" class="fa fa-linkedin-square" ></a>
+		<a href="http://www.google.com" class="fa fa-facebook-square" /></a>
+		<h1 class="bolinhas">Bolinhas</h1>
+		<h1 class="tontas">Tontas</h1>
+		
+		<div class="Button Button--start">
+			<button type="button" onclick="requestFullScreen()"><span>Start</span></button>
+		</div>
 	</div>
+	
+	<canvas id="maincanvas" style="display: none;"></canvas>
  </body>
 </html>
