@@ -165,9 +165,14 @@
 		
 		ctx = canvas.getContext('2d');
 		
-		repaint();
+		ctx.canvas.width  = window.innerWidth;
+		ctx.canvas.height = window.innerHeight;
 		
-						
+		canvas.width = document.body.clientWidth-2;
+		canvas.height = document.body.clientHeight-2;
+		
+		repaint();
+					
 		running = true;
 		draw();
 	}
@@ -236,12 +241,6 @@
 	};
 	
 	function repaint(){
-		ctx.canvas.width  = window.innerWidth;
-		ctx.canvas.height = window.innerHeight;
-		
-		
-		canvas.width = document.body.clientWidth-2;
-		canvas.height = document.body.clientHeight-2;
 		
 		ctx.clearRect(0,0, canvas.width, canvas.height);
 			
